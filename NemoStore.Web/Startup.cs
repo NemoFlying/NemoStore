@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Logging;
+using Castle.Facilities.Logging;
+using Castle.Services.Logging.Log4netIntegration;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
 using Castle.Windsor.MsDependencyInjection;
@@ -41,10 +45,10 @@ namespace NemoStore.Web
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //注册Oracle数据库服务 
-            //services.AddOraDbContext(Configuration["DbConnString:OracleConn"]);
+            services.AddOraDbContext(Configuration["DbConnString:OracleConn"]);
 
             //注册SqlServer数据库服务 
-            services.AddSqlDbContext(Configuration["DbConnString:SqlConn"]);
+            //services.AddSqlDbContext(Configuration["DbConnString:SqlConn"]);
 
             //使用 WindsorContainer
             var windsorContainer = new WindsorContainer();
@@ -52,6 +56,20 @@ namespace NemoStore.Web
             //注册模块
 
             windsorContainer.Install(FromAssembly.Named("NemoStore.Repository"));
+
+            windsorContainer.Install(FromAssembly.Named("NemoStore.Web"));
+            
+            //注册日志模块
+            windsorContainer.AddFacility<LoggingFacility>(facility =>
+            facility
+            //.LogUsing(new Log4netFactory("log4net.config")));
+            .LogUsing<Log4netFactory>()
+            //.UseLog4Net()
+            .WithConfig("log4net.config"));
+            
+            ////var fStream = File.OpenRead();
+            //var kk = new Log4netFactory("log4net.config").Create("InfrastructureLog");
+            //kk.Debug("Info___________");
             return WindsorRegistrationHelper.CreateServiceProvider(windsorContainer, services);
 
 

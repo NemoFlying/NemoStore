@@ -7,10 +7,11 @@
 
 
   <ItemGroup>
+    <PackageReference Include="Castle.Core-log4net" Version="4.4.0" />
+    <PackageReference Include="Castle.LoggingFacility" Version="5.0.0" />
     <PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="3.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Oracle.EntityFrameworkCore" Version="2.18.0-beta3" />
   </ItemGroup>
 
 
@@ -19,6 +20,13 @@
     <ProjectReference Include="..\NemoStore.EFCoreSql\NemoStore.EFCoreSql.csproj" />
     <ProjectReference Include="..\NemoStore.EFCore\NemoStore.EFCore.csproj" />
     <ProjectReference Include="..\NemoStore.Repository\NemoStore.Repository.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Update="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
